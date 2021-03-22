@@ -1,7 +1,7 @@
 import os, datetime, time, subprocess
 
-start = datetime.datetime.strptime("20180101", "%Y%m%d")
-finish = datetime.datetime.strptime("20191230", "%Y%m%d")
+start = datetime.datetime.strptime("20210101", "%Y%m%d")
+finish = datetime.datetime.strptime("20210310", "%Y%m%d")
 old_date = datetime.datetime.strptime("20180401", "%Y%m%d")
 
 now = start
@@ -22,7 +22,7 @@ while now.strftime("%Y%m%d") <= finish.strftime("%Y%m%d"):
     for line in inputf:
         line = line.rstrip()
         if line.startswith("output="):
-            new_line = "output=\"/home/hdp-netlab/i-luchaoyi/GDPR/cluster-dbscan/" + now_str + "-" + str(week_no) + "\""
+            new_line = "output=\"/home/hdp-netlab/i-luchaoyi/whois-unicode/" + now_str + "-" + str(week_no) + "\""
             print new_line
         elif "-input" in line:
             # 7 days.
@@ -41,14 +41,14 @@ while now.strftime("%Y%m%d") <= finish.strftime("%Y%m%d"):
                                     (now + datetime.timedelta(days=temp)).strftime("%Y%m%d") + "\" \\\n"
             new_line = new_line.rstrip("\n")
         elif line.startswith("job_name"):
-            new_line = "job_name=\"i-luchaoyi-gdpr-dbscan-cluster-" + now_str + "\""
+            new_line = "job_name=\"i-luchaoyi-whois-unicode-" + now_str + "\""
         else:
             new_line = line
         outputf.write(new_line + "\n")
     outputf.close()
     ### FIXED: only look at failed cycles. check if the SUCCESS file exists in the output folder.
     cmd_str = os.popen(
-        "hadoop fs -ls /home/hdp-netlab/i-luchaoyi/GDPR/cluster-dbscan/" + now_str + "-" + str(week_no)).read()
+        "hadoop fs -ls /home/hdp-netlab/i-luchaoyi/whois-unicode/" + now_str + "-" + str(week_no)).read()
     if "SUCCESS" in cmd_str:
         # this cycle has succeeded before. skip.
         print "SUCCESS"
@@ -56,7 +56,7 @@ while now.strftime("%Y%m%d") <= finish.strftime("%Y%m%d"):
         print "FAIL"
         # non-blocking call.
         subprocess.Popen("/bin/sh scan" + now_str + ".sh", shell=True)
-        time.sleep(900)
+        # time.sleep(900)
 
     now = now + datetime.timedelta(days=INTERVAL_DAYS)
     week_no += 1

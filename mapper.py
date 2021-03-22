@@ -114,7 +114,7 @@ def parse_json_whois(json_line):
 
         # domain filter.
         if not extract_abnormal(domain_name):
-            print domain_name, "normal"
+            # print domain_name, "normal"
             return "error"
 
         # try to get the IANA ID.
