@@ -6,6 +6,7 @@ import string
 import codecs
 import unicodedata
 import idna
+import platform
 from binascii import unhexlify
 
 # wanted_item = ["first_seen", "last_seen", "check_time"]
@@ -62,7 +63,10 @@ def is_ascii(s):
     return True
 
 # 把所有的非ascii表达提取出来
-def extract_non_ascii(domain, ver_py):
+# 此处需要提供python版本，python3.7及以上可以用python自带的isascii()方法进行判断
+def extract_non_ascii(domain, ver_py=None):
+    if ver_py==None:
+        ver_py = float(platform.python_version()[:3])
     non_ascii = False
     if ver_py >= 3.7:
         if not domain.isascii():
@@ -79,12 +83,14 @@ def extract_puny(domain):
     else:
         return False
 
-# 把我们需要的域名提取出来：1）ascii with xn--；2）non ascii
-def extract_abnormal(domain, ver_py):
+# 把需要的域名提取出来：1）ascii with xn--；2）non ascii
+def extract_abnormal(domain, ver_py=None):
     is_abnormal = False
     if extract_non_ascii(domain, ver_py):
+        # non ascii
         is_abnormal = True
     elif extract_puny(domain):
+        # ascii with xn--
         is_abnormal = True
     return is_abnormal
 
@@ -106,7 +112,10 @@ def parse_json_whois(json_line):
         domain_name = rec["domainname"][0].lower()
         result["domain"] = domain_name
 
-        # TODO: insert domain filter here.
+        # domain filter.
+        if not extract_abnormal(domain_name):
+            print domain_name, "normal"
+            return "error"
 
         # try to get the IANA ID.
         if "r_text_list" in rec:
@@ -121,7 +130,7 @@ def parse_json_whois(json_line):
                         result["iana_id"] = iana_id
         # no IANA ID found. skip.
         if "iana_id" not in result:
-            return "error"
+            result["iana_id"] = "None"
     except Exception as e:
         return "error"
 

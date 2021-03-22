@@ -5,6 +5,7 @@ import os
 import json
 import sys
 from binascii import unhexlify
+import platform
 
 # 十六进制转成字符表达，比如unicode code point为1d750，用这个函数可以转换成字符𝝐，方便后续过滤
 def hex_unicode_to_char(unicode_str):
@@ -48,7 +49,10 @@ def is_ascii(s):
     return True
 
 # 把所有的非ascii表达提取出来
-def extract_non_ascii(domain, ver_py):
+# 此处需要提供python版本，python3.7及以上可以用python自带的isascii()方法进行判断
+def extract_non_ascii(domain, ver_py=None):
+    if ver_py==None:
+        ver_py = float(platform.python_version()[:3])
     non_ascii = False
     if ver_py >= 3.7:
         if not domain.isascii():
@@ -65,12 +69,14 @@ def extract_puny(domain):
     else:
         return False
 
-# 把我们需要的域名提取出来：1）ascii with xn--；2）non ascii
+# 把需要的域名提取出来：1）ascii with xn--；2）non ascii
 def extract_abnormal(domain, ver_py):
     is_abnormal = False
     if extract_non_ascii(domain, ver_py):
+        # non ascii
         is_abnormal = True
     elif extract_puny(domain):
+        # ascii with xn--
         is_abnormal = True
     return is_abnormal
 
