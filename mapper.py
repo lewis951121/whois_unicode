@@ -13,6 +13,7 @@ from binascii import unhexlify
 wanted_item = []
 wanted_item.append("createddate")
 wanted_item.append("r_whoisserver_list")
+wanted_item.append("check_time")
 
 na_value = "n/a"
 

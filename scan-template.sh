@@ -30,7 +30,7 @@ $HADOOP fs -rm -r $output
 $HADOOP streaming \
   -D mapred.job.priority=NORMAL \
   -D mapred.job.name="$job_name" \
-  -D mapred.reduce.tasks=2000  \
+  -D mapred.reduce.tasks=50  \
   -D mapreduce.reduce.maxattempts=20 \
   -jobconf mapreduce.reduce.memory.mb=12288 \
   -input "/home/hdp-netlab/whoisdb/log/new/20180401" \

@@ -1,7 +1,7 @@
 import os, datetime, time, subprocess
 
-start = datetime.datetime.strptime("20210101", "%Y%m%d")
-finish = datetime.datetime.strptime("20210310", "%Y%m%d")
+start = datetime.datetime.strptime("20180101", "%Y%m%d")
+finish = datetime.datetime.strptime("20210401", "%Y%m%d")
 old_date = datetime.datetime.strptime("20180401", "%Y%m%d")
 
 now = start
@@ -56,7 +56,7 @@ while now.strftime("%Y%m%d") <= finish.strftime("%Y%m%d"):
         print "FAIL"
         # non-blocking call.
         subprocess.Popen("/bin/sh scan" + now_str + ".sh", shell=True)
-        # time.sleep(900)
+        time.sleep(900)
 
     now = now + datetime.timedelta(days=INTERVAL_DAYS)
     week_no += 1
