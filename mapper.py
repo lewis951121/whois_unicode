@@ -5,7 +5,7 @@ import os, sys, json
 import string
 import codecs
 import unicodedata
-import idna
+# import idna
 import platform
 from binascii import unhexlify
 
