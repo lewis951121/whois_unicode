@@ -10,7 +10,7 @@ import platform
 from binascii import unhexlify
 
 wanted_item = ["first_seen", "last_seen", "check_time",
-               "createdate", "expiresdate",
+               "createddate", "expiresdate",
                "r_whoisserver_list", "nameservers",
                "registrant_country", "status"]
 # wanted_item = []
