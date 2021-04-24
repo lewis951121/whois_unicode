@@ -169,6 +169,6 @@ def main():
             continue
 
         encoding = sys.stdout.encoding
-        print line.encode(encoding, 'backslashreplace')
+        print line.encode("utf-8")
 
 main()
