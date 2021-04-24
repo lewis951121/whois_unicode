@@ -9,11 +9,14 @@ import unicodedata
 import platform
 from binascii import unhexlify
 
-# wanted_item = ["first_seen", "last_seen", "check_time"]
-wanted_item = []
-wanted_item.append("createddate")
-wanted_item.append("r_whoisserver_list")
-wanted_item.append("check_time")
+wanted_item = ["first_seen", "last_seen", "check_time",
+               "createdate", "expiresdate",
+               "r_whoisserver_list", "nameservers",
+               "registrant_country", "status"]
+# wanted_item = []
+# wanted_item.append("createddate")
+# wanted_item.append("r_whoisserver_list")
+# wanted_item.append("check_time")
 
 na_value = "n/a"
 
@@ -165,6 +168,7 @@ def main():
         if line == "error":
             continue
 
-        print line
+        encoding = sys.stdout.encoding
+        print line.encode(encoding, 'backslashreplace')
 
 main()
